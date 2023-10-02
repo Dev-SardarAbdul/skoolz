@@ -43,6 +43,7 @@ function Admin() {
                 <th>#</th>
                 <th>Name</th>
                 <th>Status</th>
+                <th>Application Date</th>
                 <th></th>
               </tr>
             </thead>
@@ -52,6 +53,7 @@ function Admin() {
                   <td>{index + 1}</td>
                   <td style={{ textTransform: "capitalize" }}>{user?.name} </td>
                   <td>{user?.isEnrolled ? "Enrolled" : "Pending"} </td>
+                  <td>{user?.createdAt.slice(0, 10)}</td>
                   <td>
                     {user?.isEnrolled ? (
                       "Already Enrolled"
