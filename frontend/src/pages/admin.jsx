@@ -21,8 +21,6 @@ function Admin() {
     getUsers();
   }, []);
 
-  console.log(users);
-
   const handleEnroll = async (id) => {
     await enrollUser(id);
 
