@@ -1,6 +1,7 @@
 const User = require("../models/userModel");
 const mongoose = require("mongoose");
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 
 const createToken = (_id) => {
   return jwt.sign({ _id }, process.env.JWT_SECRET, { expiresIn: "30d" });
@@ -21,14 +22,6 @@ const getAllUsers = async (req, res) => {
 
 const getSingleUser = async (req, res) => {
   const { id } = req.params;
-
-  const admin = req.user.isAdmin;
-
-  if (!admin) {
-    return res
-      .status(400)
-      .json({ error: "Only admins can fetch  user's data " });
-  }
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: "User is not valid" });
@@ -76,6 +69,8 @@ const signupUser = async (req, res) => {
       isEnrolled: user.isEnrolled,
       isAdmin: user.isAdmin,
       name: user.name,
+      image: user.image,
+      id: user._id,
     };
 
     res.status(200).json(responseData);
@@ -97,6 +92,48 @@ const loginUser = async (req, res) => {
       isEnrolled: user.isEnrolled,
       isAdmin: user.isAdmin,
       name: user.name,
+      image: user.image,
+      id: user._id,
+    };
+
+    res.status(200).json(responseData);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
+const updateProfile = async (req, res) => {
+  const { image, name, password } = req.body;
+  const { id } = req.params;
+
+  if (!mongoose.Types.ObjectId.isValid(id)) {
+    return res.status(400).json({ error: "User is not valid" });
+  }
+
+  try {
+    const user = await User.findById(id);
+    const token = createToken(user._id);
+
+    if (user) {
+      user.image = image || user.image;
+      user.name = name || user.name;
+
+      if (password) {
+        const salt = await bcrypt.genSalt(10);
+        const updatedPassword = await bcrypt.hash(password, salt);
+        user.password = updatedPassword || user.password;
+      }
+    }
+    const updatedUser = await user.save();
+
+    const responseData = {
+      email: updatedUser.email,
+      isEnrolled: updatedUser.isEnrolled,
+      isAdmin: updatedUser.isAdmin,
+      name: updatedUser.name,
+      image: updatedUser.image,
+      id: updatedUser._id,
+      token,
     };
 
     res.status(200).json(responseData);
@@ -111,4 +148,5 @@ module.exports = {
   signupUser,
   loginUser,
   enrollUser,
+  updateProfile,
 };

@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { BASE_URL } from "../constants";
 import { setUser } from "../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
-import ToastComp from "../components/toast";
 
 export const loginHook = () => {
   const [error, setError] = useState(null);

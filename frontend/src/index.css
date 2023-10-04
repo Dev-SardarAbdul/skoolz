@@ -26,7 +26,7 @@ body {
 }
 
 .email-text {
-  color: #fff;
+  color: #000;
   margin: 0;
   font-size: 18px;
 }
@@ -137,4 +137,29 @@ form {
   margin-top: 1rem;
   color: #fff;
   font-weight: 600;
+}
+
+.dropdown-div {
+  position: absolute;
+  bottom: -150px;
+  /* left: 5rem; */
+  background-color: #f8f8f8;
+  box-shadow: 0 0 20px 0px rgba(0, 0, 0, 0.75);
+  padding: 1rem;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 0.5rem;
+}
+
+.profile-btn {
+  background-color: #39aecf;
+  border: none;
+  border-radius: 5px;
+  padding: 5px 1rem;
+  color: #fff;
+  font-weight: 600;
+  width: 150px;
 }

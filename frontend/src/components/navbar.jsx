@@ -6,17 +6,31 @@ import Image from "react-bootstrap/Image";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../redux/slices/authSlice";
+import { useState } from "react";
+import { useEffect } from "react";
+import user from "../assets/user.png";
 
 function Topbar() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [showDropdwon, setShowDropdown] = useState(false);
+  const [imageSrc, setImageSrc] = useState("");
 
   const { auth } = useSelector((state) => state.auth);
 
   const handleLogout = () => {
     dispatch(logoutUser());
     navigate("/login");
+    setShowDropdown(false);
+    setImageSrc(null);
   };
+
+  useEffect(() => {
+    if (auth?.image) {
+      setImageSrc(`data:image/*;base64,${auth?.image}`);
+    }
+  }, [auth?.image]);
+
   return (
     <div>
       <Navbar expand="lg">
@@ -33,14 +47,42 @@ function Topbar() {
                 <button onClick={() => navigate("/signup")}>Signup</button>
               </div>
             ) : (
-              <div className="btn-div">
-                <p
-                  className="email-text"
-                  style={{ textTransform: "capitalize" }}
-                >
-                  <strong> {auth.name}</strong>
-                </p>
-                <button onClick={handleLogout}>Logout</button>
+              <div
+                className="btn-div"
+                style={{ position: "relative", minWidth: "200px" }}
+              >
+                <img
+                  src={imageSrc || user}
+                  alt="Image"
+                  onClick={() => setShowDropdown(!showDropdwon)}
+                  style={{ cursor: "pointer" }}
+                  height={70}
+                />
+
+                {showDropdwon && (
+                  <div className="dropdown-div">
+                    <p
+                      className="email-text"
+                      style={{ textTransform: "capitalize" }}
+                    >
+                      Name:
+                      <strong> {auth.name}</strong>
+                    </p>
+
+                    <button
+                      className="profile-btn"
+                      onClick={() => {
+                        navigate("/profile");
+                        setShowDropdown(false);
+                      }}
+                    >
+                      Visit Profile
+                    </button>
+                    <button className="profile-btn" onClick={handleLogout}>
+                      Logout
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </Navbar.Collapse>

@@ -9,6 +9,7 @@ import PrivateRoute from "./components/privateRoutes/privateRroute";
 import AdminRoute from "./components/privateRoutes/adminRoute";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
+import Profile from "./pages/profile";
 
 function App() {
   const { auth } = useSelector((state) => state.auth);
@@ -20,6 +21,7 @@ function App() {
         <Routes>
           <Route path="" element={<PrivateRoute />}>
             <Route path="/" element={<Home />} />
+            <Route path="/profile" element={<Profile />} />
           </Route>
           <Route
             path="/learning"
