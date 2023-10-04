@@ -14,13 +14,16 @@ export const updateProfileHook = () => {
     image,
     name,
     password,
+    newPassword,
     setName,
-    setPassword
+    setPassword,
+    setNewPassword,
+    setConfirmPass
   ) => {
     setLoading(true);
     const response = await fetch(`${BASE_URL}/profile/${id}`, {
       method: "PATCH",
-      body: JSON.stringify({ image, name, password }),
+      body: JSON.stringify({ image, name, password, newPassword }),
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${auth.token}`,
@@ -40,6 +43,8 @@ export const updateProfileHook = () => {
       dispatch(setUser(data));
       setName("");
       setPassword("");
+      setNewPassword("");
+      setConfirmPass("");
     }
   };
 

@@ -103,8 +103,12 @@ const loginUser = async (req, res) => {
 };
 
 const updateProfile = async (req, res) => {
-  const { image, name, password } = req.body;
+  const { image, name, password, newPassword } = req.body;
   const { id } = req.params;
+
+  if (!password) {
+    return res.status(400).json({ error: "Please provide current password" });
+  }
 
   if (!mongoose.Types.ObjectId.isValid(id)) {
     return res.status(400).json({ error: "User is not valid" });
@@ -112,15 +116,22 @@ const updateProfile = async (req, res) => {
 
   try {
     const user = await User.findById(id);
+
+    const passCheck = await bcrypt.compare(password, user.password);
+
+    if (!passCheck) {
+      return res.status(400).json({ error: "Current password is wrong" });
+    }
+
     const token = createToken(user._id);
 
     if (user) {
       user.image = image || user.image;
       user.name = name || user.name;
 
-      if (password) {
+      if (newPassword) {
         const salt = await bcrypt.genSalt(10);
-        const updatedPassword = await bcrypt.hash(password, salt);
+        const updatedPassword = await bcrypt.hash(newPassword, salt);
         user.password = updatedPassword || user.password;
       }
     }

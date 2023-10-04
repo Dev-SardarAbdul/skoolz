@@ -7,10 +7,16 @@ import { useSelector } from "react-redux";
 
 function Profile() {
   const { auth } = useSelector((state) => state.auth);
+  const [name, setName] = useState(auth.name || "");
 
   const [password, setPassword] = useState("");
-  const [name, setName] = useState(auth.name || "");
+
+  const [newPassword, setNewPassword] = useState("");
+  const [confirmPass, setConfirmPass] = useState("");
+
   const [imageBase64, setImageBase64] = useState(null);
+  const [passError, setPassError] = useState(null);
+
   const { updateProfile, error, loading } = updateProfileHook();
 
   const handleFileChange = (e) => {
@@ -27,7 +33,19 @@ function Profile() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    updateProfile(auth.id, imageBase64, name, password, setName, setPassword);
+    if (newPassword === confirmPass) {
+      updateProfile(
+        auth.id,
+        imageBase64,
+        name,
+        password,
+        newPassword,
+        setName,
+        setPassword,
+        setNewPassword,
+        setConfirmPass
+      );
+    } else setPassError("Password and confirm password don't match");
   };
   return (
     <div>
@@ -55,7 +73,7 @@ function Profile() {
           </Form.Group>
 
           <Form.Group className="mb-3">
-            <Form.Label>Password</Form.Label>
+            <Form.Label>Current Password</Form.Label>
             <Form.Control
               type="password"
               placeholder="Password"
@@ -64,11 +82,34 @@ function Profile() {
             />
           </Form.Group>
 
+          <Form.Group className="mb-3">
+            <Form.Label>New Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Confirm Password</Form.Label>
+            <Form.Control
+              type="password"
+              placeholder="Password"
+              value={confirmPass}
+              onChange={(e) => setConfirmPass(e.target.value)}
+              required={newPassword && true}
+            />
+          </Form.Group>
+
           <button className="form-btn" type="submit">
             Save
           </button>
 
-          {error && <div className="error">Error: {error}</div>}
+          {(error || passError) && (
+            <div className="error">Error: {error || passError}</div>
+          )}
         </Form>
       </Container>
     </div>
