@@ -51,7 +51,7 @@ function Profile() {
     <div>
       {loading && <Loader />}
       <Container>
-        <h2 className="form-header"> Update Credentials </h2>
+        <h2 className="form-header"> Update Profile </h2>
         <Form onSubmit={handleSubmit}>
           <Form.Group className="mb-3">
             <Form.Label>Profile Picture</Form.Label>

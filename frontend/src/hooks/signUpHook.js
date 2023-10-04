@@ -3,12 +3,11 @@ import { BASE_URL } from "../constants";
 import { useDispatch } from "react-redux";
 import { setUser } from "../redux/slices/authSlice";
 import { useNavigate } from "react-router-dom";
-import ToastComp from "../components/toast";
 
 export const signupHook = () => {
   const [error, setError] = useState(null);
+  const [message, setMessage] = useState(null);
   const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   const handleCreateUser = async (
     name,
@@ -38,9 +37,9 @@ export const signupHook = () => {
       setEmail("");
       setName("");
       setPassword("");
-      navigate("/");
+      setMessage("Verification email has been sent, please check your mail!");
     }
   };
 
-  return { handleCreateUser, error };
+  return { handleCreateUser, error, message };
 };

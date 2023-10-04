@@ -9,7 +9,7 @@ function Signup() {
   const [password, setPassword] = useState("");
   const [email, setEmail] = useState("");
 
-  const { handleCreateUser, error } = signupHook();
+  const { handleCreateUser, error, message } = signupHook();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -67,6 +67,7 @@ function Signup() {
           </button>
 
           {error && <div className="error">Error: {error}</div>}
+          {message && <div className="message">Success: {message}</div>}
         </Form>
       </Container>
     </div>

@@ -3,7 +3,7 @@ body {
 }
 
 .navbar {
-  background: #39aecf !important;
+  background: linear-gradient(80deg, #39aecf, #d1cbcb) !important;
 }
 
 .nav-img {
@@ -46,7 +46,7 @@ body {
 
 form {
   padding: 2rem;
-  background-color: #39aecf;
+  background: linear-gradient(80deg, #39aecf, #d1cbcb) !important;
   width: 600px;
   display: block;
   margin: 2rem auto;
@@ -139,6 +139,15 @@ form {
   font-weight: 600;
 }
 
+.message {
+  background-color: #90ee90;
+  border-radius: 5px;
+  padding: 1rem;
+  margin-top: 1rem;
+  color: #fff;
+  font-weight: 600;
+}
+
 .dropdown-div {
   position: absolute;
   bottom: -150px;
@@ -162,4 +171,30 @@ form {
   color: #fff;
   font-weight: 600;
   width: 150px;
+}
+
+.verify-div {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  background: linear-gradient(80deg, #39aecf, #d1cbcb) !important;
+
+  height: 100vh;
+}
+
+.verify-div > h2 {
+  font-size: 3.5rem;
+}
+.verify-div > p {
+  font-size: 1.5rem;
+  text-align: center;
+  color: #fff;
+}
+
+@media (max-width: 991.98px) {
+  .verify-div > h2 {
+    font-size: 2.5rem;
+  }
 }

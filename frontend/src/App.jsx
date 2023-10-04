@@ -10,44 +10,44 @@ import AdminRoute from "./components/privateRoutes/adminRoute";
 import { Navigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import Profile from "./pages/profile";
+import Verify from "./pages/verify";
 
 function App() {
   const { auth } = useSelector((state) => state.auth);
 
   return (
     <>
-      <BrowserRouter>
-        <Topbar />
-        <Routes>
-          <Route path="" element={<PrivateRoute />}>
-            <Route path="/" element={<Home />} />
-            <Route path="/profile" element={<Profile />} />
-          </Route>
-          <Route
-            path="/learning"
-            element={
-              auth && auth.isEnrolled ? (
-                <Learning />
-              ) : (
-                <Navigate to="/" replace />
-              )
-            }
-          />
+      {!location.pathname.startsWith("/verify") && <Topbar />}
+      <Routes>
+        <Route path="" element={<PrivateRoute />}>
+          <Route path="/" element={<Home />} />
+          <Route path="/profile" element={<Profile />} />
+        </Route>
+        <Route
+          path="/learning"
+          element={
+            auth && auth.isEnrolled ? <Learning /> : <Navigate to="/" replace />
+          }
+        />
 
-          <Route path="" element={<AdminRoute />}>
-            <Route path="/admin" element={<Admin />} />
-          </Route>
+        <Route path="" element={<AdminRoute />}>
+          <Route path="/admin" element={<Admin />} />
+        </Route>
 
-          <Route
-            path="/login"
-            element={auth ? <Navigate to="/" replace /> : <Login />}
-          />
-          <Route
-            path="/signup"
-            element={auth ? <Navigate to="/" replace /> : <Signup />}
-          />
-        </Routes>
-      </BrowserRouter>
+        <Route
+          path="/login"
+          element={
+            auth && auth.isVerified ? <Navigate to="/" replace /> : <Login />
+          }
+        />
+        <Route
+          path="/signup"
+          element={
+            auth && auth.isVerified ? <Navigate to="/" replace /> : <Signup />
+          }
+        />
+        <Route path="/verify/:id" element={<Verify />} />
+      </Routes>
     </>
   );
 }

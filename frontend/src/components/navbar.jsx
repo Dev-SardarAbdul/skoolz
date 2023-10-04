@@ -41,12 +41,7 @@ function Topbar() {
           <Navbar.Toggle aria-controls="basic-navbar-nav" />
           <Navbar.Collapse id="basic-navbar-nav">
             <Nav className="ms-auto"></Nav>
-            {!auth ? (
-              <div className="btn-div">
-                <button onClick={() => navigate("/login")}>Login</button>
-                <button onClick={() => navigate("/signup")}>Signup</button>
-              </div>
-            ) : (
+            {auth && auth.isVerified ? (
               <div
                 className="btn-div"
                 style={{ position: "relative", minWidth: "200px" }}
@@ -83,6 +78,11 @@ function Topbar() {
                     </button>
                   </div>
                 )}
+              </div>
+            ) : (
+              <div className="btn-div">
+                <button onClick={() => navigate("/login")}>Login</button>
+                <button onClick={() => navigate("/signup")}>Signup</button>
               </div>
             )}
           </Navbar.Collapse>

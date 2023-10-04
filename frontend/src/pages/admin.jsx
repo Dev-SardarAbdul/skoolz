@@ -41,6 +41,7 @@ function Admin() {
                 <th>#</th>
                 <th>Name</th>
                 <th>Status</th>
+                <th>Verified</th>
                 <th>Application Date</th>
                 <th></th>
               </tr>
@@ -51,18 +52,29 @@ function Admin() {
                   <td>{index + 1}</td>
                   <td style={{ textTransform: "capitalize" }}>{user?.name} </td>
                   <td>{user?.isEnrolled ? "Enrolled" : "Pending"} </td>
+                  <td>
+                    {user?.isVerified
+                      ? "Email is Verified"
+                      : "Email is Unverified"}{" "}
+                  </td>
                   <td>{user?.createdAt.slice(0, 10)}</td>
                   <td>
-                    {user?.isEnrolled ? (
-                      "Already Enrolled"
+                    {user?.isVerified ? (
+                      <>
+                        {user?.isEnrolled ? (
+                          "Already Enrolled"
+                        ) : (
+                          <button
+                            className="table-btn"
+                            onClick={() => handleEnroll(user._id)}
+                            disabled={enrollLoading}
+                          >
+                            Enroll
+                          </button>
+                        )}
+                      </>
                     ) : (
-                      <button
-                        className="table-btn"
-                        onClick={() => handleEnroll(user._id)}
-                        disabled={enrollLoading}
-                      >
-                        Enroll
-                      </button>
+                      "User Unverified"
                     )}
                   </td>
                 </tr>
